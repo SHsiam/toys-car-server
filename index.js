@@ -45,6 +45,28 @@ async function run() {
     res.send(result);
 })
 
+app.put('/products/:id', async(req, res) => {
+  const id = req.params.id;
+  const filter = {_id: new ObjectId(id)}
+  const options = { upsert: true };
+  const updatedToys = req.body;
+
+  const toy = {
+      $set: {
+        customerName: updatedToys.customerName, 
+        name: updatedToys.name, 
+        sub_category: updatedToys.sub_category, 
+        price: updatedToys.price, 
+        short_description: updatedToys.short_description, 
+        email: updatedToys.email, 
+        rating: updatedToys.rating,
+        image:updatedToys.image,
+      }
+  }
+
+  const result = await carsCollection.updateOne(filter,toy, options);
+  res.send(result);
+})
 
 
 app.post('/products', async (req, res) => {
